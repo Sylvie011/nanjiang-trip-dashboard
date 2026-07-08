@@ -439,6 +439,114 @@
       gap: 12px;
     }
 
+    .api-grid, .detail-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 16px;
+    }
+
+    .api-card, .day-detail {
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      box-shadow: 0 10px 28px rgba(30, 36, 40, .06);
+    }
+
+    .api-card {
+      padding: 18px;
+    }
+
+    .api-card code {
+      display: block;
+      margin-top: 10px;
+      padding: 12px;
+      border-radius: 8px;
+      background: #f4f7f7;
+      color: #31535a;
+      white-space: normal;
+      word-break: break-word;
+      font-size: 13px;
+    }
+
+    .day-detail {
+      overflow: hidden;
+    }
+
+    .day-detail summary {
+      cursor: pointer;
+      padding: 16px 18px;
+      font-weight: 780;
+      list-style: none;
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .day-detail summary::-webkit-details-marker { display: none; }
+
+    .detail-body {
+      border-top: 1px solid var(--line);
+      padding: 16px 18px 18px;
+    }
+
+    .time-table {
+      display: grid;
+      gap: 8px;
+      margin: 12px 0 14px;
+    }
+
+    .time-row {
+      display: grid;
+      grid-template-columns: 86px 1fr;
+      gap: 12px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .time-row strong {
+      color: var(--clay);
+    }
+
+    .photo-strip {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    .photo-card {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      overflow: hidden;
+      background: #f8faf9;
+      text-decoration: none;
+      color: var(--ink);
+      min-height: 168px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .photo-card img {
+      width: 100%;
+      aspect-ratio: 4 / 3;
+      object-fit: cover;
+      display: block;
+      background: #e8eeee;
+    }
+
+    .photo-card span {
+      padding: 9px 10px;
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .source-note {
+      margin-top: 10px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
     .check {
       border-left: 4px solid var(--lake);
       padding: 14px 16px;
@@ -458,7 +566,7 @@
     }
 
     @media (max-width: 920px) {
-      .summary-grid, .monitor-grid, .weather-cards, .checklist, .live-panel {
+      .summary-grid, .monitor-grid, .weather-cards, .checklist, .live-panel, .api-grid, .detail-grid {
         grid-template-columns: repeat(2, minmax(0, 1fr));
       }
       .layout { grid-template-columns: 1fr; }
@@ -469,7 +577,7 @@
     @media (max-width: 620px) {
       .hero { min-height: 72vh; }
       .nav-inner { align-items: flex-start; flex-direction: column; gap: 0; padding-top: 10px; }
-      .summary-grid, .monitor-grid, .weather-cards, .checklist, .live-panel { grid-template-columns: 1fr; }
+      .summary-grid, .monitor-grid, .weather-cards, .checklist, .live-panel, .api-grid, .detail-grid, .photo-strip { grid-template-columns: 1fr; }
       .day { grid-template-columns: 1fr; }
       .day .tag { grid-column: auto; }
       .live-head, .price-item, .weather-live-item { align-items: flex-start; grid-template-columns: 1fr; }
@@ -482,9 +590,9 @@
 <body>
   <header class="hero">
     <div class="hero-inner">
-      <p class="eyebrow">2026.09.29 - 2026.10.06｜上海出发｜喀什进出｜7人包车</p>
+      <p class="eyebrow">2026.09.29 - 2026.10.06｜上海出发｜喀什进出｜8人包车</p>
       <h1>南疆国庆旅行攻略与机票天气监控</h1>
-      <p class="hero-copy">把喀什的人文、帕米尔高原的雪山湖泊、塔县的盘龙古道和胡杨景观放进8天行程，车程不过度硬拉，适合7个人舒适包车。</p>
+      <p class="hero-copy">把喀什的人文、帕米尔高原的雪山湖泊、塔县的盘龙古道和胡杨景观放进8天行程，车程不过度硬拉，适合8个人舒适包车。</p>
       <div class="hero-actions">
         <a class="button primary" href="#strategy">查看旅行攻略</a>
         <a class="button" href="#monitor">查看监控面板</a>
@@ -511,8 +619,8 @@
       <div class="summary-grid">
         <div class="metric">
           <div class="label">人数与交通</div>
-          <div class="value">7人 + 司机</div>
-          <div class="note">建议9座或10座商务车，给行李留空间。</div>
+          <div class="value">8人 + 司机</div>
+          <div class="note">至少9座，舒适优先建议10座或11座商务车。</div>
         </div>
         <div class="metric">
           <div class="label">进出城市</div>
@@ -606,7 +714,7 @@
       <aside>
         <div class="card">
           <h3>为什么不硬拉大环线</h3>
-          <p>国庆期间车多、景区住宿紧张，7个人又需要舒服座椅。喀什进出的小环线能把精华压实，同时留出天气调整空间。</p>
+          <p>国庆期间车多、景区住宿紧张，8个人更需要舒服座椅和行李空间。喀什进出的小环线能把精华压实，同时留出天气调整空间。</p>
         </div>
         <div class="card">
           <h3>可替换方案</h3>
@@ -621,7 +729,7 @@
           <ul>
             <li>国庆商务车约 2500-3800 元/天，视车型和是否含油费浮动。</li>
             <li>酒店优先定可取消房，塔县房源更需要提前锁。</li>
-            <li>机票先看7人同价余票，再看分批购买是否便宜。</li>
+            <li>机票先看8人同价余票，再看分批购买是否便宜。</li>
           </ul>
         </div>
       </aside>
@@ -632,16 +740,16 @@
       <div class="monitor-grid">
         <div class="monitor-card">
           <h3>车型底线</h3>
-          <p>不要只写“8座商务”。7人加司机刚好8人，但行李会挤，长途舒适度也容易下降。</p>
+          <p>不要只写“8座商务”。8人加司机至少需要9座，长途还要给行李和换坐留余量。</p>
           <div class="status-row">
-            <span class="pill strong">优先9座/10座</span>
+            <span class="pill strong">优先10座/11座</span>
             <span class="pill">独立座椅</span>
             <span class="pill">后备箱充足</span>
           </div>
         </div>
         <div class="monitor-card">
           <h3>推荐车型</h3>
-          <p>可询价奔驰威霆/奔驰V级9座、福特全顺高顶商务、丰田海狮类商务改装车，重点看座椅和行李空间实拍。</p>
+          <p>可询价奔驰威霆/奔驰V级高配商务、福特全顺高顶商务、丰田海狮类商务改装车，重点看10座以上布局、座椅和行李空间实拍。</p>
         </div>
         <div class="monitor-card">
           <h3>合同写清</h3>
@@ -703,7 +811,7 @@
           <h3>触发提醒</h3>
           <ul>
             <li>单人往返含税价格明显低于近期均价。</li>
-            <li>同一价格档至少可买7张。</li>
+            <li>同一价格档至少可买8张。</li>
             <li>直飞价格接近中转，或较上次下降10%以上。</li>
             <li>返程 10/7 明显便宜时，提醒是否多请一天假。</li>
           </ul>
@@ -759,12 +867,173 @@
       </div>
     </section>
 
+    <section id="api">
+      <h2>实时接入方案</h2>
+      <div class="api-grid">
+        <div class="api-card">
+          <h3>天气 API</h3>
+          <p>页面可以直接接 Open-Meteo 的公开接口，不需要密钥，适合展示喀什、塔县、莎车/泽普的近7天天气。国庆期间的准确预报要等出发前7-10天才可靠。</p>
+          <code>https://api.open-meteo.com/v1/forecast?latitude=39.47&longitude=75.99&current=temperature_2m,wind_speed_10m&daily=temperature_2m_max,temperature_2m_min,precipitation_probability_max&timezone=Asia%2FShanghai</code>
+        </div>
+        <div class="api-card">
+          <h3>机票价格</h3>
+          <p>机票不能只靠网页前端实时抓取。可靠做法是接入航司/OTA/商旅平台数据源，或由定时任务把人工核实后的价格写入 <strong>data/status.json</strong>，网页自动读取。</p>
+          <ul>
+            <li>优先：携程商旅/飞常准/航班管家等合规企业数据。</li>
+            <li>备选：GitHub Actions 定时更新 status.json。</li>
+            <li>不建议：无授权抓取购票网站页面，容易失效且可能违反平台规则。</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section id="daily-details">
+      <h2>每日可点开详程</h2>
+      <div class="detail-grid">
+        <details class="day-detail" open>
+          <summary><span>9/29 上海 → 喀什</span><span class="tag">抵达适应</span></summary>
+          <div class="detail-body">
+            <p>建议选中午前后或下午抵达的航班，落地后只安排轻量活动，避免第一天过度疲劳。</p>
+            <div class="time-table">
+              <div class="time-row"><strong>18:30</strong><span>酒店入住、整理行李，确认次日司机集合时间。</span></div>
+              <div class="time-row"><strong>20:00</strong><span>喀什古城夜景和晚餐，适应新疆作息。</span></div>
+              <div class="time-row"><strong>休息点</strong><span>古城内茶馆/咖啡馆，适合等人集合。</span></div>
+            </div>
+            <div class="photo-strip">
+              <a class="photo-card" href="https://www.tibetcn.com/xinjiangxianlu/5-days-southern-xnjiang-tour.html" target="_blank" rel="noreferrer"><img src="https://www.tibetcn.com/uploadfile/2024/0507/20240507053116283.jpg" alt="喀什古城街巷参考"><span>喀什古城街巷</span></a>
+              <a class="photo-card" href="https://www.tibetcn.com/xinjiangxianlu/5-days-southern-xnjiang-tour.html" target="_blank" rel="noreferrer"><img src="https://www.tibetcn.com/uploadfile/2024/0507/20240507053118540.jpg" alt="喀什古城建筑参考"><span>古城土黄色建筑</span></a>
+              <a class="photo-card" href="https://www.tibetcn.com/xinjiangxianlu/5-days-southern-xnjiang-tour.html" target="_blank" rel="noreferrer"><img src="https://www.tibetcn.com/uploadfile/2024/0507/20240507053119535.jpg" alt="喀什茶馆参考"><span>老城茶馆氛围</span></a>
+            </div>
+            <p class="source-note">图片为公开网页参考图，实际景色受天气、季节和光线影响。</p>
+          </div>
+        </details>
+
+        <details class="day-detail">
+          <summary><span>9/30 喀什古城深度日</span><span class="tag">人文慢游</span></summary>
+          <div class="detail-body">
+            <div class="time-table">
+              <div class="time-row"><strong>10:00</strong><span>看古城开城仪式，随后走手工艺街、土陶、铜器、花帽店。</span></div>
+              <div class="time-row"><strong>13:30</strong><span>古城内午餐，下午安排香妃园或百年老茶馆。</span></div>
+              <div class="time-row"><strong>17:30</strong><span>高台民居片区/古城旅拍，晚上自由觅食。</span></div>
+              <div class="time-row"><strong>休息点</strong><span>百年老茶馆、古城咖啡馆、酒店午休。</span></div>
+            </div>
+            <div class="photo-strip">
+              <a class="photo-card" href="https://www.tibetcn.com/xinjiangxianlu/5-days-southern-xnjiang-tour.html" target="_blank" rel="noreferrer"><img src="https://www.tibetcn.com/uploadfile/2024/0507/20240507053116283.jpg" alt="喀什古城参考"><span>古城主街</span></a>
+              <a class="photo-card" href="https://www.tibetcn.com/xinjiangxianlu/5-days-southern-xnjiang-tour.html" target="_blank" rel="noreferrer"><img src="https://www.tibetcn.com/uploadfile/2024/0507/20240507053120939.jpg" alt="喀什古城生活参考"><span>古城生活场景</span></a>
+              <a class="photo-card" href="https://www.tibetcn.com/xinjiangxianlu/5-days-southern-xnjiang-tour.html" target="_blank" rel="noreferrer"><img src="https://www.tibetcn.com/uploadfile/2024/0507/20240507053119757.jpg" alt="喀什老城参考"><span>老城建筑细节</span></a>
+            </div>
+          </div>
+        </details>
+
+        <details class="day-detail">
+          <summary><span>10/1 喀什 → 白沙湖 → 喀拉库勒湖 → 塔县</span><span class="tag">高原进山</span></summary>
+          <div class="detail-body">
+            <div class="time-table">
+              <div class="time-row"><strong>08:30</strong><span>喀什出发，提前备水和零食，开始走中巴友谊公路。</span></div>
+              <div class="time-row"><strong>12:00</strong><span>白沙湖拍照，风大时缩短停留。</span></div>
+              <div class="time-row"><strong>15:00</strong><span>喀拉库勒湖和慕士塔格峰远眺，视天气决定停留时长。</span></div>
+              <div class="time-row"><strong>休息点</strong><span>盖孜检查站周边、白沙湖服务点、塔县酒店。</span></div>
+            </div>
+            <div class="photo-strip">
+              <a class="photo-card" href="https://www.tibetcn.com/xinjiangxianlu/5-days-southern-xnjiang-tour.html" target="_blank" rel="noreferrer"><img src="https://www.tibetcn.com/uploadfile/2024/0507/20240507053121420.jpg" alt="白沙湖参考"><span>白沙湖</span></a>
+              <a class="photo-card" href="https://www.tibetcn.com/xinjiangxianlu/5-days-southern-xnjiang-tour.html" target="_blank" rel="noreferrer"><img src="https://www.tibetcn.com/uploadfile/2024/0507/20240507053122879.jpg" alt="喀拉库勒湖参考"><span>喀拉库勒湖</span></a>
+              <a class="photo-card" href="https://www.tibetcn.com/xinjiangxianlu/5-days-southern-xnjiang-tour.html" target="_blank" rel="noreferrer"><img src="https://www.tibetcn.com/uploadfile/2024/0507/20240507053123798.jpg" alt="慕士塔格峰参考"><span>慕士塔格峰</span></a>
+            </div>
+          </div>
+        </details>
+
+        <details class="day-detail">
+          <summary><span>10/2 盘龙古道与塔县周边</span><span class="tag">雪山公路</span></summary>
+          <div class="detail-body">
+            <div class="time-table">
+              <div class="time-row"><strong>09:30</strong><span>塔县出发，先走盘龙古道，注意弯道多，容易晕车。</span></div>
+              <div class="time-row"><strong>12:30</strong><span>瓦恰乡午餐或路餐，下午看班迪尔蓝湖/下坂地水库。</span></div>
+              <div class="time-row"><strong>16:30</strong><span>塔合曼湿地，天气好可拍雪山、草甸和马群。</span></div>
+              <div class="time-row"><strong>休息点</strong><span>瓦恰乡、塔县县城咖啡/奶茶店、酒店午休。</span></div>
+            </div>
+            <div class="photo-strip">
+              <a class="photo-card" href="https://apple-trip.com/panlong-ancient-road/" target="_blank" rel="noreferrer"><img src="https://apple-trip.com/wp-content/uploads/2023/09/Panlong-Ancient-Road.jpg" alt="盘龙古道参考"><span>盘龙古道</span></a>
+              <a class="photo-card" href="https://www.tibetcn.com/xinjiangxianlu/5-days-southern-xnjiang-tour.html" target="_blank" rel="noreferrer"><img src="https://www.tibetcn.com/uploadfile/2024/0507/20240507053124458.jpg" alt="塔县周边参考"><span>塔县周边雪山</span></a>
+              <a class="photo-card" href="https://www.tibetcn.com/xinjiangxianlu/5-days-southern-xnjiang-tour.html" target="_blank" rel="noreferrer"><img src="https://www.tibetcn.com/uploadfile/2024/0507/20240507053125435.jpg" alt="塔县湿地参考"><span>湿地与雪山</span></a>
+            </div>
+          </div>
+        </details>
+
+        <details class="day-detail">
+          <summary><span>10/3 塔县 → 喀什</span><span class="tag">返程补拍</span></summary>
+          <div class="detail-body">
+            <div class="time-table">
+              <div class="time-row"><strong>09:00</strong><span>塔县退房返程，天气好可补拍慕士塔格峰和白沙湖。</span></div>
+              <div class="time-row"><strong>14:30</strong><span>视体力加奥依塔克冰川公园或直接回喀什休息。</span></div>
+              <div class="time-row"><strong>20:00</strong><span>喀什夜市晚餐，整理高原段照片。</span></div>
+              <div class="time-row"><strong>休息点</strong><span>白沙湖服务点、沿途餐厅、喀什酒店。</span></div>
+            </div>
+            <div class="photo-strip">
+              <a class="photo-card" href="https://www.tibetcn.com/xinjiangxianlu/5-days-southern-xnjiang-tour.html" target="_blank" rel="noreferrer"><img src="https://www.tibetcn.com/uploadfile/2024/0507/20240507053121420.jpg" alt="白沙湖返程参考"><span>白沙湖补拍</span></a>
+              <a class="photo-card" href="https://www.tibetcn.com/xinjiangxianlu/5-days-southern-xnjiang-tour.html" target="_blank" rel="noreferrer"><img src="https://www.tibetcn.com/uploadfile/2024/0507/20240507053122879.jpg" alt="湖泊雪山参考"><span>湖泊雪山</span></a>
+              <a class="photo-card" href="https://www.tibetcn.com/xinjiangxianlu/5-days-southern-xnjiang-tour.html" target="_blank" rel="noreferrer"><img src="https://www.tibetcn.com/uploadfile/2024/0507/20240507053123798.jpg" alt="慕士塔格峰返程参考"><span>慕士塔格峰</span></a>
+            </div>
+          </div>
+        </details>
+
+        <details class="day-detail">
+          <summary><span>10/4 牛羊大巴扎与古城二刷</span><span class="tag">市集日</span></summary>
+          <div class="detail-body">
+            <div class="time-table">
+              <div class="time-row"><strong>09:30</strong><span>前往牛羊大巴扎，建议上午去，人流和交易氛围更集中。</span></div>
+              <div class="time-row"><strong>13:30</strong><span>午餐后回酒店休息，下午古城二刷和伴手礼。</span></div>
+              <div class="time-row"><strong>19:30</strong><span>古城晚餐，适合安排集体合照。</span></div>
+              <div class="time-row"><strong>休息点</strong><span>酒店午休、古城茶馆、咖啡馆。</span></div>
+            </div>
+            <div class="photo-strip">
+              <a class="photo-card" href="https://www.tibetcn.com/xinjiangxianlu/5-days-southern-xnjiang-tour.html" target="_blank" rel="noreferrer"><img src="https://www.tibetcn.com/uploadfile/2024/0507/20240507053126620.jpg" alt="喀什大巴扎参考"><span>牛羊大巴扎</span></a>
+              <a class="photo-card" href="https://www.tibetcn.com/xinjiangxianlu/5-days-southern-xnjiang-tour.html" target="_blank" rel="noreferrer"><img src="https://www.tibetcn.com/uploadfile/2024/0507/20240507053120939.jpg" alt="喀什古城街景参考"><span>古城二刷</span></a>
+              <a class="photo-card" href="https://www.tibetcn.com/xinjiangxianlu/5-days-southern-xnjiang-tour.html" target="_blank" rel="noreferrer"><img src="https://www.tibetcn.com/uploadfile/2024/0507/20240507053119535.jpg" alt="古城茶馆参考"><span>茶馆休息</span></a>
+            </div>
+          </div>
+        </details>
+
+        <details class="day-detail">
+          <summary><span>10/5 莎车与泽普金湖杨</span><span class="tag">胡杨备选</span></summary>
+          <div class="detail-body">
+            <div class="time-table">
+              <div class="time-row"><strong>08:30</strong><span>喀什出发去莎车，先看王陵/叶尔羌汗王宫。</span></div>
+              <div class="time-row"><strong>13:30</strong><span>莎车午餐后去泽普金湖杨，视胡杨色期决定停留。</span></div>
+              <div class="time-row"><strong>18:00</strong><span>返程喀什，避免太晚走夜路。</span></div>
+              <div class="time-row"><strong>休息点</strong><span>莎车县城餐厅、泽普景区服务点、返程服务区。</span></div>
+            </div>
+            <div class="photo-strip">
+              <a class="photo-card" href="https://www.tibetcn.com/xinjiangxianlu/5-days-southern-xnjiang-tour.html" target="_blank" rel="noreferrer"><img src="https://www.tibetcn.com/uploadfile/2024/0507/20240507053128123.jpg" alt="莎车人文参考"><span>莎车人文</span></a>
+              <a class="photo-card" href="https://www.visitourchina.com/kashgar/attraction/golden-lake-populus-euphratica-national-forest-park.html" target="_blank" rel="noreferrer"><img src="https://www.visitourchina.com/FileUpload/Guide/Attration/Golden-Lake-Populus-Euphratica-National-Forest-Park-1.jpg" alt="泽普金湖杨参考"><span>泽普金湖杨</span></a>
+              <a class="photo-card" href="https://www.visitourchina.com/kashgar/attraction/golden-lake-populus-euphratica-national-forest-park.html" target="_blank" rel="noreferrer"><img src="https://www.visitourchina.com/FileUpload/Guide/Attration/Golden-Lake-Populus-Euphratica-National-Forest-Park-2.jpg" alt="胡杨林参考"><span>胡杨林色彩</span></a>
+            </div>
+          </div>
+        </details>
+
+        <details class="day-detail">
+          <summary><span>10/6 喀什 → 上海</span><span class="tag">返程</span></summary>
+          <div class="detail-body">
+            <div class="time-table">
+              <div class="time-row"><strong>上午</strong><span>晚航班可补买干果、咖啡、手工艺品；早航班直接去机场。</span></div>
+              <div class="time-row"><strong>提前3小时</strong><span>国庆返程建议早点到机场，8人托运行李时间更长。</span></div>
+              <div class="time-row"><strong>休息点</strong><span>酒店大堂、机场休息区、古城咖啡馆。</span></div>
+            </div>
+            <div class="photo-strip">
+              <a class="photo-card" href="https://www.tibetcn.com/xinjiangxianlu/5-days-southern-xnjiang-tour.html" target="_blank" rel="noreferrer"><img src="https://www.tibetcn.com/uploadfile/2024/0507/20240507053116283.jpg" alt="喀什返程参考"><span>返程前古城散步</span></a>
+              <a class="photo-card" href="https://www.tibetcn.com/xinjiangxianlu/5-days-southern-xnjiang-tour.html" target="_blank" rel="noreferrer"><img src="https://www.tibetcn.com/uploadfile/2024/0507/20240507053118540.jpg" alt="喀什伴手礼参考"><span>伴手礼街区</span></a>
+              <a class="photo-card" href="https://www.tibetcn.com/xinjiangxianlu/5-days-southern-xnjiang-tour.html" target="_blank" rel="noreferrer"><img src="https://www.tibetcn.com/uploadfile/2024/0507/20240507053119535.jpg" alt="喀什茶馆休息参考"><span>茶馆收尾</span></a>
+            </div>
+          </div>
+        </details>
+      </div>
+    </section>
+
     <section id="todo">
       <h2>出发前清单</h2>
       <div class="checklist">
         <div class="check">
           <h3>现在到8月</h3>
-          <p>锁定包车车型、酒店可取消房、7人证件信息；确认大家能否接受9/28或10/7的机票备选。</p>
+          <p>锁定包车车型、酒店可取消房、8人证件信息；确认大家能否接受9/28或10/7的机票备选。</p>
         </div>
         <div class="check">
           <h3>9月上旬</h3>
@@ -787,9 +1056,9 @@
       source: "Codex monitor",
       flight: {
         status: "pending",
-        summary: "暂无可确认的7人可购低价或明显降价信号，继续每日监控。",
+        summary: "暂无可确认的8人可购低价或明显降价信号，继续每日监控。",
         items: [
-          { route: "上海 → 喀什", dates: "9/28、9/29、9/30", price: "待更新", note: "重点看直飞/经停同航班与7人余票" },
+          { route: "上海 → 喀什", dates: "9/28、9/29、9/30", price: "待更新", note: "重点看直飞/经停同航班与8人余票" },
           { route: "喀什 → 上海", dates: "10/5、10/6、10/7", price: "待更新", note: "重点看10/6与10/7返程价差" }
         ]
       },
@@ -860,8 +1129,48 @@
       }
     }
 
+    async function loadWeatherApi() {
+      const cities = [
+        { city: "喀什", latitude: 39.47, longitude: 75.99 },
+        { city: "塔什库尔干", latitude: 37.77, longitude: 75.23 },
+        { city: "莎车/泽普", latitude: 38.42, longitude: 77.24 }
+      ];
+
+      try {
+        const results = await Promise.all(cities.map(async city => {
+          const url = `https://api.open-meteo.com/v1/forecast?latitude=${city.latitude}&longitude=${city.longitude}&current=temperature_2m,wind_speed_10m&daily=temperature_2m_max,temperature_2m_min,precipitation_probability_max&timezone=Asia%2FShanghai`;
+          const response = await fetch(url, { cache: "no-store" });
+          if (!response.ok) throw new Error("weather unavailable");
+          const data = await response.json();
+          const max = Math.round(data.daily.temperature_2m_max[0]);
+          const min = Math.round(data.daily.temperature_2m_min[0]);
+          const rain = data.daily.precipitation_probability_max[0] ?? 0;
+          return {
+            city: city.city,
+            condition: `当前 ${Math.round(data.current.temperature_2m)}℃｜今日 ${min}-${max}℃｜降水概率 ${rain}%`,
+            risk: data.current.wind_speed_10m > 25 ? "风大，注意体感温度" : "天气实时更新"
+          };
+        }));
+
+        const weatherData = {
+          updatedAt: new Date().toISOString(),
+          flight: fallbackStatus.flight,
+          weather: {
+            status: "live",
+            summary: "以下为 Open-Meteo 近7天天气接口返回的实时参考；国庆具体天气需临近出发再判断。",
+            cities: results
+          }
+        };
+        renderStatus(weatherData);
+      } catch (error) {
+        // Keep the status.json/fallback weather when public API calls are unavailable.
+      }
+    }
+
     loadStatus();
+    loadWeatherApi();
     setInterval(loadStatus, 60000);
+    setInterval(loadWeatherApi, 10 * 60 * 1000);
   </script>
 </body>
 </html>
