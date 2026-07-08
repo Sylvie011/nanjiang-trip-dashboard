@@ -1,0 +1,1794 @@
+
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>南疆国庆旅行攻略与机票天气监控</title>
+  <style>
+    :root {
+      --ink: #1e2428;
+      --muted: #66727c;
+      --line: #d9e0e3;
+      --paper: #fbfaf6;
+      --panel: #ffffff;
+      --sand: #d7a96f;
+      --clay: #9f5d3f;
+      --lake: #2f8f9d;
+      --green: #52745f;
+      --sky: #dcecf0;
+      --warn: #b96d2c;
+      --shadow: 0 18px 45px rgba(30, 36, 40, .12);
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Microsoft YaHei", sans-serif;
+      color: var(--ink);
+      background: var(--paper);
+      line-height: 1.55;
+    }
+
+    .hero {
+      min-height: 76vh;
+      background:
+        linear-gradient(90deg, rgba(18, 22, 24, .72), rgba(18, 22, 24, .25) 55%, rgba(18, 22, 24, .1)),
+        url("nanjiang-hero.png") center / cover no-repeat;
+      color: #fff;
+      display: flex;
+      align-items: flex-end;
+      position: relative;
+    }
+
+    .hero-inner {
+      width: min(1180px, calc(100% - 36px));
+      margin: 0 auto;
+      padding: 48px 0 58px;
+    }
+
+    .eyebrow {
+      margin: 0 0 12px;
+      font-size: 14px;
+      letter-spacing: 0;
+      color: rgba(255,255,255,.78);
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(34px, 6vw, 72px);
+      line-height: 1.04;
+      letter-spacing: 0;
+      max-width: 820px;
+    }
+
+    .hero-copy {
+      max-width: 700px;
+      margin: 20px 0 28px;
+      font-size: clamp(16px, 2vw, 20px);
+      color: rgba(255,255,255,.88);
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .button {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      min-height: 44px;
+      padding: 0 16px;
+      border-radius: 8px;
+      border: 1px solid rgba(255,255,255,.55);
+      color: #fff;
+      text-decoration: none;
+      background: rgba(255,255,255,.12);
+      backdrop-filter: blur(10px);
+      font-weight: 650;
+    }
+
+    .button.primary {
+      background: #fff;
+      color: var(--ink);
+      border-color: #fff;
+    }
+
+    .nav {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      background: rgba(251, 250, 246, .92);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .nav-inner {
+      width: min(1180px, calc(100% - 36px));
+      margin: 0 auto;
+      min-height: 58px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    .brand { font-weight: 760; white-space: nowrap; }
+    .tabs {
+      display: flex;
+      gap: 6px;
+      overflow-x: auto;
+      padding: 10px 0;
+    }
+
+    .tabs a {
+      color: var(--muted);
+      text-decoration: none;
+      border: 1px solid transparent;
+      border-radius: 8px;
+      padding: 8px 10px;
+      white-space: nowrap;
+      font-size: 14px;
+    }
+
+    .tabs a:hover {
+      color: var(--ink);
+      border-color: var(--line);
+      background: #fff;
+    }
+
+    main {
+      width: min(1180px, calc(100% - 36px));
+      margin: 0 auto;
+      padding: 34px 0 56px;
+    }
+
+    section { margin: 0 0 46px; }
+    h2 {
+      margin: 0 0 18px;
+      font-size: clamp(24px, 4vw, 36px);
+      line-height: 1.16;
+      letter-spacing: 0;
+    }
+
+    h3 {
+      margin: 0 0 10px;
+      font-size: 18px;
+      letter-spacing: 0;
+    }
+
+    .summary-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .metric, .card, .monitor-card, .day {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      box-shadow: 0 10px 28px rgba(30, 36, 40, .06);
+    }
+
+    .metric {
+      padding: 16px;
+      min-height: 116px;
+    }
+
+    .metric .label {
+      color: var(--muted);
+      font-size: 13px;
+      margin-bottom: 7px;
+    }
+
+    .metric .value {
+      font-size: 22px;
+      font-weight: 760;
+      line-height: 1.2;
+    }
+
+    .metric .note {
+      color: var(--muted);
+      font-size: 13px;
+      margin-top: 8px;
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: 1.15fr .85fr;
+      gap: 22px;
+      align-items: start;
+    }
+
+    .route-list {
+      display: grid;
+      gap: 12px;
+    }
+
+    .day {
+      display: grid;
+      grid-template-columns: 86px 1fr 120px;
+      gap: 14px;
+      padding: 16px;
+      align-items: start;
+    }
+
+    .date {
+      font-weight: 760;
+      color: var(--clay);
+    }
+
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      min-height: 26px;
+      padding: 0 9px;
+      border-radius: 999px;
+      background: var(--sky);
+      color: #28555d;
+      font-size: 13px;
+      font-weight: 680;
+      white-space: nowrap;
+    }
+
+    .day p, .card p, .monitor-card p { margin: 0; color: var(--muted); }
+
+    .card {
+      padding: 18px;
+      margin-bottom: 14px;
+    }
+
+    .card ul, .monitor-card ul {
+      margin: 10px 0 0;
+      padding-left: 18px;
+      color: var(--muted);
+    }
+
+    .card li, .monitor-card li { margin: 6px 0; }
+
+    .monitor-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 16px;
+    }
+
+    .monitor-card {
+      padding: 18px;
+    }
+
+    .live-panel {
+      display: grid;
+      grid-template-columns: 1.05fr .95fr;
+      gap: 16px;
+      margin-bottom: 18px;
+    }
+
+    .live-card {
+      background: #ffffff;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 18px;
+      box-shadow: 0 10px 28px rgba(30, 36, 40, .06);
+    }
+
+    .live-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+
+    .live-title {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: 760;
+      font-size: 18px;
+    }
+
+    .live-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 999px;
+      background: #2f9e68;
+      box-shadow: 0 0 0 6px rgba(47, 158, 104, .12);
+      flex: 0 0 auto;
+    }
+
+    .live-dot.pending {
+      background: var(--warn);
+      box-shadow: 0 0 0 6px rgba(185, 109, 44, .12);
+    }
+
+    .live-time {
+      color: var(--muted);
+      font-size: 13px;
+      white-space: nowrap;
+    }
+
+    .price-list, .weather-live-list {
+      display: grid;
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    .price-item, .weather-live-item {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 12px;
+      align-items: center;
+      padding: 12px;
+      border-radius: 8px;
+      background: #f7faf9;
+      border: 1px solid #e4ecea;
+    }
+
+    .price-main, .weather-main {
+      min-width: 0;
+    }
+
+    .price-route, .weather-city {
+      font-weight: 730;
+      margin-bottom: 2px;
+    }
+
+    .price-meta, .weather-meta {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .price-value {
+      font-size: 20px;
+      font-weight: 780;
+      color: var(--clay);
+      white-space: nowrap;
+    }
+
+    .signal {
+      display: inline-flex;
+      align-items: center;
+      min-height: 28px;
+      padding: 0 10px;
+      border-radius: 999px;
+      background: rgba(47, 143, 157, .09);
+      color: #28555d;
+      font-weight: 720;
+      font-size: 13px;
+    }
+
+    .status-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin: 12px 0 0;
+    }
+
+    .pill {
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 6px 10px;
+      font-size: 13px;
+      color: var(--muted);
+      background: #fff;
+    }
+
+    .pill.strong {
+      color: var(--ink);
+      border-color: rgba(47, 143, 157, .35);
+      background: rgba(47, 143, 157, .08);
+      font-weight: 700;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      overflow: hidden;
+      border-radius: 8px;
+      background: #fff;
+      border: 1px solid var(--line);
+    }
+
+    th, td {
+      padding: 12px;
+      border-bottom: 1px solid var(--line);
+      text-align: left;
+      vertical-align: top;
+      font-size: 14px;
+    }
+
+    th {
+      color: var(--muted);
+      font-weight: 700;
+      background: #f3f7f7;
+    }
+
+    tr:last-child td { border-bottom: 0; }
+
+    .weather-cards {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .weather {
+      background: linear-gradient(180deg, #fff, #f4f9fa);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 16px;
+      min-height: 152px;
+    }
+
+    .weather .city {
+      font-size: 20px;
+      font-weight: 760;
+      margin-bottom: 8px;
+    }
+
+    .weather .risk {
+      color: var(--warn);
+      font-weight: 700;
+      margin-top: 10px;
+    }
+
+    .checklist {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .check {
+      border-left: 4px solid var(--lake);
+      padding: 14px 16px;
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: 0 10px 26px rgba(30, 36, 40, .05);
+    }
+
+    .check:nth-child(2) { border-left-color: var(--sand); }
+    .check:nth-child(3) { border-left-color: var(--green); }
+
+    footer {
+      color: var(--muted);
+      font-size: 13px;
+      border-top: 1px solid var(--line);
+      padding-top: 18px;
+    }
+
+    @media (max-width: 920px) {
+      .summary-grid, .monitor-grid, .weather-cards, .checklist, .live-panel {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+      .layout { grid-template-columns: 1fr; }
+      .day { grid-template-columns: 76px 1fr; }
+      .day .tag { grid-column: 2; width: fit-content; }
+    }
+
+    @media (max-width: 620px) {
+      .hero { min-height: 72vh; }
+      .nav-inner { align-items: flex-start; flex-direction: column; gap: 0; padding-top: 10px; }
+      .summary-grid, .monitor-grid, .weather-cards, .checklist, .live-panel { grid-template-columns: 1fr; }
+      .day { grid-template-columns: 1fr; }
+      .day .tag { grid-column: auto; }
+      .live-head, .price-item, .weather-live-item { align-items: flex-start; grid-template-columns: 1fr; }
+      .live-head { flex-direction: column; }
+      th, td { padding: 10px 8px; font-size: 13px; }
+      .hero-inner, main, .nav-inner { width: min(100% - 24px, 1180px); }
+    }
+  </style>
+</head>
+<body>
+  <header class="hero">
+    <div class="hero-inner">
+      <p class="eyebrow">2026.09.29 - 2026.10.06｜上海出发｜喀什进出｜7人包车</p>
+      <h1>南疆国庆旅行攻略与机票天气监控</h1>
+      <p class="hero-copy">把喀什的人文、帕米尔高原的雪山湖泊、塔县的盘龙古道和胡杨景观放进8天行程，车程不过度硬拉，适合7个人舒适包车。</p>
+      <div class="hero-actions">
+        <a class="button primary" href="#strategy">查看旅行攻略</a>
+        <a class="button" href="#monitor">查看监控面板</a>
+      </div>
+    </div>
+  </header>
+
+  <nav class="nav" aria-label="页面导航">
+    <div class="nav-inner">
+      <div class="brand">南疆出行作战板</div>
+      <div class="tabs">
+        <a href="#overview">概览</a>
+        <a href="#strategy">旅行攻略</a>
+        <a href="#car">包车要求</a>
+        <a href="#monitor">机票天气监控</a>
+        <a href="#todo">出发清单</a>
+      </div>
+    </div>
+  </nav>
+
+  <main>
+    <section id="overview">
+      <h2>行程概览</h2>
+      <div class="summary-grid">
+        <div class="metric">
+          <div class="label">人数与交通</div>
+          <div class="value">7人 + 司机</div>
+          <div class="note">建议9座或10座商务车，给行李留空间。</div>
+        </div>
+        <div class="metric">
+          <div class="label">进出城市</div>
+          <div class="value">喀什进出</div>
+          <div class="note">上海往返喀什，减少跨城还车和折腾。</div>
+        </div>
+        <div class="metric">
+          <div class="label">核心体验</div>
+          <div class="value">喀什 + 塔县</div>
+          <div class="note">古城、白沙湖、慕士塔格峰、盘龙古道。</div>
+        </div>
+        <div class="metric">
+          <div class="label">路线原则</div>
+          <div class="value">舒适优先</div>
+          <div class="note">不硬拉和田大环线，避免国庆长车程疲劳。</div>
+        </div>
+      </div>
+    </section>
+
+    <section id="strategy" class="layout">
+      <div>
+        <h2>南疆旅行攻略</h2>
+        <div class="route-list">
+          <article class="day">
+            <div class="date">9/29</div>
+            <div>
+              <h3>上海飞喀什，落地休整</h3>
+              <p>抵达后不要排太满，晚上轻松逛喀什古城，吃烤包子、鸽子汤、抓饭，适应新疆作息。</p>
+            </div>
+            <span class="tag">住喀什</span>
+          </article>
+          <article class="day">
+            <div class="date">9/30</div>
+            <div>
+              <h3>喀什古城深度日</h3>
+              <p>安排古城开城仪式、百年老茶馆、手工艺街、艾提尕尔周边、香妃园。当天也适合办齐边防证。</p>
+            </div>
+            <span class="tag">住喀什</span>
+          </article>
+          <article class="day">
+            <div class="date">10/1</div>
+            <div>
+              <h3>喀什到塔县，高原景观进入正片</h3>
+              <p>沿中巴友谊公路前往塔什库尔干，重点看白沙湖、喀拉库勒湖、慕士塔格峰。当天海拔上升明显，节奏放慢。</p>
+            </div>
+            <span class="tag">住塔县</span>
+          </article>
+          <article class="day">
+            <div class="date">10/2</div>
+            <div>
+              <h3>盘龙古道与塔县周边</h3>
+              <p>走盘龙古道、瓦恰乡、班迪尔蓝湖或下坂地水库、塔合曼湿地。天气好时雪山和蓝湖会非常出片。</p>
+            </div>
+            <span class="tag">住塔县</span>
+          </article>
+          <article class="day">
+            <div class="date">10/3</div>
+            <div>
+              <h3>塔县返回喀什</h3>
+              <p>返程可补拍白沙湖、慕士塔格峰，体力和路况允许再加奥依塔克冰川公园。晚上回喀什吃夜市。</p>
+            </div>
+            <span class="tag">住喀什</span>
+          </article>
+          <article class="day">
+            <div class="date">10/4</div>
+            <div>
+              <h3>喀什牛羊大巴扎与古城二刷</h3>
+              <p>如果当天是周日，把牛羊大巴扎放在上午。下午留给古城慢逛、旅拍、咖啡馆和伴手礼。</p>
+            </div>
+            <span class="tag">住喀什</span>
+          </article>
+          <article class="day">
+            <div class="date">10/5</div>
+            <div>
+              <h3>莎车与泽普金湖杨一日往返</h3>
+              <p>看莎车王陵、叶尔羌汗王宫，再到泽普金湖杨。若胡杨未到最佳色期，也可改成喀什休闲日。</p>
+            </div>
+            <span class="tag">住喀什</span>
+          </article>
+          <article class="day">
+            <div class="date">10/6</div>
+            <div>
+              <h3>喀什飞上海</h3>
+              <p>晚航班可上午补买干果、手工艺品；早航班则建议前一晚把行李和证件完全整理好。</p>
+            </div>
+            <span class="tag">返程</span>
+          </article>
+        </div>
+      </div>
+
+      <aside>
+        <div class="card">
+          <h3>为什么不硬拉大环线</h3>
+          <p>国庆期间车多、景区住宿紧张，7个人又需要舒服座椅。喀什进出的小环线能把精华压实，同时留出天气调整空间。</p>
+        </div>
+        <div class="card">
+          <h3>可替换方案</h3>
+          <ul>
+            <li>如果塔县天气差：多留一天喀什，等白沙湖和慕士塔格峰窗口。</li>
+            <li>如果胡杨未黄：10/5 改成英吉沙小刀村、土陶村或喀什休闲。</li>
+            <li>如果朋友能多请一天：10/7 返程更利于避开高峰。</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>预算抓手</h3>
+          <ul>
+            <li>国庆商务车约 2500-3800 元/天，视车型和是否含油费浮动。</li>
+            <li>酒店优先定可取消房，塔县房源更需要提前锁。</li>
+            <li>机票先看7人同价余票，再看分批购买是否便宜。</li>
+          </ul>
+        </div>
+      </aside>
+    </section>
+
+    <section id="car">
+      <h2>包车要求</h2>
+      <div class="monitor-grid">
+        <div class="monitor-card">
+          <h3>车型底线</h3>
+          <p>不要只写“8座商务”。7人加司机刚好8人，但行李会挤，长途舒适度也容易下降。</p>
+          <div class="status-row">
+            <span class="pill strong">优先9座/10座</span>
+            <span class="pill">独立座椅</span>
+            <span class="pill">后备箱充足</span>
+          </div>
+        </div>
+        <div class="monitor-card">
+          <h3>推荐车型</h3>
+          <p>可询价奔驰威霆/奔驰V级9座、福特全顺高顶商务、丰田海狮类商务改装车，重点看座椅和行李空间实拍。</p>
+        </div>
+        <div class="monitor-card">
+          <h3>合同写清</h3>
+          <ul>
+            <li>是否含油费、过路费、停车费、司机食宿。</li>
+            <li>国庆堵车超时费、临时改线费、每日公里限制。</li>
+            <li>车辆营运资质、保险、司机是否熟悉塔县路线。</li>
+          </ul>
+        </div>
+        <div class="monitor-card">
+          <h3>证件与安全</h3>
+          <ul>
+            <li>塔县、盘龙古道一带需要边境管理区通行证。</li>
+            <li>高原第一晚不饮酒、不剧烈运动，备好厚外套和防晒。</li>
+            <li>让司机提前确认白沙湖、盘龙古道路况和临时管制。</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section id="monitor">
+      <h2>机票检测和天气检测</h2>
+      <div class="live-panel" aria-live="polite">
+        <div class="live-card">
+          <div class="live-head">
+            <div class="live-title"><span class="live-dot pending" id="flightDot"></span>机票实时状态</div>
+            <div class="live-time" id="flightUpdated">等待数据</div>
+          </div>
+          <p id="flightSummary">线上部署后，这里会自动读取最新机票监控结果。</p>
+          <div class="price-list" id="flightPrices"></div>
+        </div>
+        <div class="live-card">
+          <div class="live-head">
+            <div class="live-title"><span class="live-dot pending" id="weatherDot"></span>天气实时状态</div>
+            <div class="live-time" id="weatherUpdated">等待数据</div>
+          </div>
+          <p id="weatherSummary">线上部署后，这里会自动读取喀什、塔县、泽普/莎车的天气风险。</p>
+          <div class="weather-live-list" id="weatherLive"></div>
+        </div>
+      </div>
+      <div class="monitor-grid">
+        <div class="monitor-card">
+          <h3>机票监控规则</h3>
+          <p>已按每日一次监控配置：优先看 9/29 去程、10/6 返程，同时兼看前后一天。</p>
+          <div class="status-row">
+            <span class="pill strong">上海 → 喀什</span>
+            <span class="pill">9/28</span>
+            <span class="pill strong">9/29</span>
+            <span class="pill">9/30</span>
+          </div>
+          <div class="status-row">
+            <span class="pill strong">喀什 → 上海</span>
+            <span class="pill">10/5</span>
+            <span class="pill strong">10/6</span>
+            <span class="pill">10/7</span>
+          </div>
+        </div>
+        <div class="monitor-card">
+          <h3>触发提醒</h3>
+          <ul>
+            <li>单人往返含税价格明显低于近期均价。</li>
+            <li>同一价格档至少可买7张。</li>
+            <li>直飞价格接近中转，或较上次下降10%以上。</li>
+            <li>返程 10/7 明显便宜时，提醒是否多请一天假。</li>
+          </ul>
+        </div>
+      </div>
+
+      <div style="margin-top: 18px; overflow-x: auto;">
+        <table aria-label="机票购买策略">
+          <thead>
+            <tr>
+              <th>组合</th>
+              <th>适合情况</th>
+              <th>购买建议</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>9/29 去 + 10/6 回</td>
+              <td>最贴合原计划，不额外请假。</td>
+              <td>如果直飞只比中转贵 500-800 元/人以内，优先直飞。</td>
+            </tr>
+            <tr>
+              <td>9/28 晚去 + 10/6 回</td>
+              <td>去程价格低，且大家能提前一晚出发。</td>
+              <td>多一晚喀什住宿，换来更从容的第一天。</td>
+            </tr>
+            <tr>
+              <td>9/29 去 + 10/7 回</td>
+              <td>返程避峰明显便宜，朋友可请一天假。</td>
+              <td>适合把10/6变成喀什休闲或备用天气日。</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3 style="margin-top: 28px;">天气关注城市</h3>
+      <div class="weather-cards">
+        <div class="weather">
+          <div class="city">喀什</div>
+          <p>昼夜温差明显，白天适合轻外套，夜晚需要保暖层。</p>
+          <div class="risk">关注：沙尘、降温、返程航班延误。</div>
+        </div>
+        <div class="weather">
+          <div class="city">塔什库尔干</div>
+          <p>高海拔，10月初夜间偏冷，风大时体感下降很快。</p>
+          <div class="risk">关注：降雪、道路管制、盘龙古道开放状态。</div>
+        </div>
+        <div class="weather">
+          <div class="city">泽普/莎车</div>
+          <p>整体比塔县温和，适合作为胡杨和人文补充线。</p>
+          <div class="risk">关注：胡杨变色情况、景区人流。</div>
+        </div>
+      </div>
+    </section>
+
+    <section id="todo">
+      <h2>出发前清单</h2>
+      <div class="checklist">
+        <div class="check">
+          <h3>现在到8月</h3>
+          <p>锁定包车车型、酒店可取消房、7人证件信息；确认大家能否接受9/28或10/7的机票备选。</p>
+        </div>
+        <div class="check">
+          <h3>9月上旬</h3>
+          <p>办理边境通行证，复核塔县住宿、司机路线、行李空间和每日出发时间。</p>
+        </div>
+        <div class="check">
+          <h3>出发前7天</h3>
+          <p>重点看塔县天气、道路管制、盘龙古道状态；把10/5设置为可替换机动日。</p>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      页面更新时间：2026-07-08。线上版本会每60秒读取一次 data/status.json；真正实时程度取决于后台监控任务的更新频率。
+    </footer>
+  </main>
+  <script>
+    const fallbackStatus = {
+      updatedAt: "2026-07-08T02:00:47Z",
+      source: "Codex monitor",
+      flight: {
+        status: "pending",
+        summary: "暂无可确认的7人可购低价或明显降价信号，继续每日监控。",
+        items: [
+          { route: "上海 → 喀什", dates: "9/28、9/29、9/30", price: "待更新", note: "重点看直飞/经停同航班与7人余票" },
+          { route: "喀什 → 上海", dates: "10/5、10/6、10/7", price: "待更新", note: "重点看10/6与10/7返程价差" }
+        ]
+      },
+      weather: {
+        status: "pending",
+        summary: "距离出发较久，临近9月下旬再提高天气监控频率。",
+        cities: [
+          { city: "喀什", condition: "待更新", risk: "关注沙尘、降温和返程航班延误" },
+          { city: "塔什库尔干", condition: "待更新", risk: "关注降雪、道路管制、盘龙古道开放状态" },
+          { city: "泽普/莎车", condition: "待更新", risk: "关注胡杨变色情况和景区人流" }
+        ]
+      }
+    };
+
+    function formatTime(value) {
+      if (!value) return "等待数据";
+      const date = new Date(value);
+      if (Number.isNaN(date.getTime())) return value;
+      return new Intl.DateTimeFormat("zh-CN", {
+        month: "2-digit",
+        day: "2-digit",
+        hour: "2-digit",
+        minute: "2-digit",
+        hour12: false
+      }).format(date);
+    }
+
+    function renderStatus(data) {
+      const flightDot = document.getElementById("flightDot");
+      const weatherDot = document.getElementById("weatherDot");
+      flightDot.classList.toggle("pending", data.flight?.status !== "live");
+      weatherDot.classList.toggle("pending", data.weather?.status !== "live");
+      document.getElementById("flightUpdated").textContent = "更新 " + formatTime(data.updatedAt);
+      document.getElementById("weatherUpdated").textContent = "更新 " + formatTime(data.updatedAt);
+      document.getElementById("flightSummary").textContent = data.flight?.summary || fallbackStatus.flight.summary;
+      document.getElementById("weatherSummary").textContent = data.weather?.summary || fallbackStatus.weather.summary;
+
+      const flightItems = data.flight?.items?.length ? data.flight.items : fallbackStatus.flight.items;
+      document.getElementById("flightPrices").innerHTML = flightItems.map(item => `
+        <div class="price-item">
+          <div class="price-main">
+            <div class="price-route">${item.route}</div>
+            <div class="price-meta">${item.dates}｜${item.note || "继续观察"}</div>
+          </div>
+          <div class="price-value">${item.price}</div>
+        </div>
+      `).join("");
+
+      const weatherItems = data.weather?.cities?.length ? data.weather.cities : fallbackStatus.weather.cities;
+      document.getElementById("weatherLive").innerHTML = weatherItems.map(item => `
+        <div class="weather-live-item">
+          <div class="weather-main">
+            <div class="weather-city">${item.city}</div>
+            <div class="weather-meta">${item.condition}</div>
+          </div>
+          <span class="signal">${item.risk}</span>
+        </div>
+      `).join("");
+    }
+
+    async function loadStatus() {
+      try {
+        const response = await fetch("data/status.json?ts=" + Date.now(), { cache: "no-store" });
+        if (!response.ok) throw new Error("status file unavailable");
+        renderStatus(await response.json());
+      } catch (error) {
+        renderStatus(fallbackStatus);
+      }
+    }
+
+    loadStatus();
+    setInterval(loadStatus, 60000);
+  </script>
+</body>
+</html>
+
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>南疆国庆旅行攻略与机票天气监控</title>
+  <style>
+    :root {
+      --ink: #1e2428;
+      --muted: #66727c;
+      --line: #d9e0e3;
+      --paper: #fbfaf6;
+      --panel: #ffffff;
+      --sand: #d7a96f;
+      --clay: #9f5d3f;
+      --lake: #2f8f9d;
+      --green: #52745f;
+      --sky: #dcecf0;
+      --warn: #b96d2c;
+      --shadow: 0 18px 45px rgba(30, 36, 40, .12);
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Microsoft YaHei", sans-serif;
+      color: var(--ink);
+      background: var(--paper);
+      line-height: 1.55;
+    }
+
+    .hero {
+      min-height: 76vh;
+      background:
+        linear-gradient(90deg, rgba(18, 22, 24, .72), rgba(18, 22, 24, .25) 55%, rgba(18, 22, 24, .1)),
+        url("nanjiang-hero.png") center / cover no-repeat;
+      color: #fff;
+      display: flex;
+      align-items: flex-end;
+      position: relative;
+    }
+
+    .hero-inner {
+      width: min(1180px, calc(100% - 36px));
+      margin: 0 auto;
+      padding: 48px 0 58px;
+    }
+
+    .eyebrow {
+      margin: 0 0 12px;
+      font-size: 14px;
+      letter-spacing: 0;
+      color: rgba(255,255,255,.78);
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(34px, 6vw, 72px);
+      line-height: 1.04;
+      letter-spacing: 0;
+      max-width: 820px;
+    }
+
+    .hero-copy {
+      max-width: 700px;
+      margin: 20px 0 28px;
+      font-size: clamp(16px, 2vw, 20px);
+      color: rgba(255,255,255,.88);
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .button {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      min-height: 44px;
+      padding: 0 16px;
+      border-radius: 8px;
+      border: 1px solid rgba(255,255,255,.55);
+      color: #fff;
+      text-decoration: none;
+      background: rgba(255,255,255,.12);
+      backdrop-filter: blur(10px);
+      font-weight: 650;
+    }
+
+    .button.primary {
+      background: #fff;
+      color: var(--ink);
+      border-color: #fff;
+    }
+
+    .nav {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      background: rgba(251, 250, 246, .92);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .nav-inner {
+      width: min(1180px, calc(100% - 36px));
+      margin: 0 auto;
+      min-height: 58px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    .brand { font-weight: 760; white-space: nowrap; }
+    .tabs {
+      display: flex;
+      gap: 6px;
+      overflow-x: auto;
+      padding: 10px 0;
+    }
+
+    .tabs a {
+      color: var(--muted);
+      text-decoration: none;
+      border: 1px solid transparent;
+      border-radius: 8px;
+      padding: 8px 10px;
+      white-space: nowrap;
+      font-size: 14px;
+    }
+
+    .tabs a:hover {
+      color: var(--ink);
+      border-color: var(--line);
+      background: #fff;
+    }
+
+    main {
+      width: min(1180px, calc(100% - 36px));
+      margin: 0 auto;
+      padding: 34px 0 56px;
+    }
+
+    section { margin: 0 0 46px; }
+    h2 {
+      margin: 0 0 18px;
+      font-size: clamp(24px, 4vw, 36px);
+      line-height: 1.16;
+      letter-spacing: 0;
+    }
+
+    h3 {
+      margin: 0 0 10px;
+      font-size: 18px;
+      letter-spacing: 0;
+    }
+
+    .summary-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .metric, .card, .monitor-card, .day {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      box-shadow: 0 10px 28px rgba(30, 36, 40, .06);
+    }
+
+    .metric {
+      padding: 16px;
+      min-height: 116px;
+    }
+
+    .metric .label {
+      color: var(--muted);
+      font-size: 13px;
+      margin-bottom: 7px;
+    }
+
+    .metric .value {
+      font-size: 22px;
+      font-weight: 760;
+      line-height: 1.2;
+    }
+
+    .metric .note {
+      color: var(--muted);
+      font-size: 13px;
+      margin-top: 8px;
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: 1.15fr .85fr;
+      gap: 22px;
+      align-items: start;
+    }
+
+    .route-list {
+      display: grid;
+      gap: 12px;
+    }
+
+    .day {
+      display: grid;
+      grid-template-columns: 86px 1fr 120px;
+      gap: 14px;
+      padding: 16px;
+      align-items: start;
+    }
+
+    .date {
+      font-weight: 760;
+      color: var(--clay);
+    }
+
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      min-height: 26px;
+      padding: 0 9px;
+      border-radius: 999px;
+      background: var(--sky);
+      color: #28555d;
+      font-size: 13px;
+      font-weight: 680;
+      white-space: nowrap;
+    }
+
+    .day p, .card p, .monitor-card p { margin: 0; color: var(--muted); }
+
+    .card {
+      padding: 18px;
+      margin-bottom: 14px;
+    }
+
+    .card ul, .monitor-card ul {
+      margin: 10px 0 0;
+      padding-left: 18px;
+      color: var(--muted);
+    }
+
+    .card li, .monitor-card li { margin: 6px 0; }
+
+    .monitor-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 16px;
+    }
+
+    .monitor-card {
+      padding: 18px;
+    }
+
+    .live-panel {
+      display: grid;
+      grid-template-columns: 1.05fr .95fr;
+      gap: 16px;
+      margin-bottom: 18px;
+    }
+
+    .live-card {
+      background: #ffffff;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 18px;
+      box-shadow: 0 10px 28px rgba(30, 36, 40, .06);
+    }
+
+    .live-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+
+    .live-title {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: 760;
+      font-size: 18px;
+    }
+
+    .live-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 999px;
+      background: #2f9e68;
+      box-shadow: 0 0 0 6px rgba(47, 158, 104, .12);
+      flex: 0 0 auto;
+    }
+
+    .live-dot.pending {
+      background: var(--warn);
+      box-shadow: 0 0 0 6px rgba(185, 109, 44, .12);
+    }
+
+    .live-time {
+      color: var(--muted);
+      font-size: 13px;
+      white-space: nowrap;
+    }
+
+    .price-list, .weather-live-list {
+      display: grid;
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    .price-item, .weather-live-item {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 12px;
+      align-items: center;
+      padding: 12px;
+      border-radius: 8px;
+      background: #f7faf9;
+      border: 1px solid #e4ecea;
+    }
+
+    .price-main, .weather-main {
+      min-width: 0;
+    }
+
+    .price-route, .weather-city {
+      font-weight: 730;
+      margin-bottom: 2px;
+    }
+
+    .price-meta, .weather-meta {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .price-value {
+      font-size: 20px;
+      font-weight: 780;
+      color: var(--clay);
+      white-space: nowrap;
+    }
+
+    .signal {
+      display: inline-flex;
+      align-items: center;
+      min-height: 28px;
+      padding: 0 10px;
+      border-radius: 999px;
+      background: rgba(47, 143, 157, .09);
+      color: #28555d;
+      font-weight: 720;
+      font-size: 13px;
+    }
+
+    .status-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin: 12px 0 0;
+    }
+
+    .pill {
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 6px 10px;
+      font-size: 13px;
+      color: var(--muted);
+      background: #fff;
+    }
+
+    .pill.strong {
+      color: var(--ink);
+      border-color: rgba(47, 143, 157, .35);
+      background: rgba(47, 143, 157, .08);
+      font-weight: 700;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      overflow: hidden;
+      border-radius: 8px;
+      background: #fff;
+      border: 1px solid var(--line);
+    }
+
+    th, td {
+      padding: 12px;
+      border-bottom: 1px solid var(--line);
+      text-align: left;
+      vertical-align: top;
+      font-size: 14px;
+    }
+
+    th {
+      color: var(--muted);
+      font-weight: 700;
+      background: #f3f7f7;
+    }
+
+    tr:last-child td { border-bottom: 0; }
+
+    .weather-cards {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .weather {
+      background: linear-gradient(180deg, #fff, #f4f9fa);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 16px;
+      min-height: 152px;
+    }
+
+    .weather .city {
+      font-size: 20px;
+      font-weight: 760;
+      margin-bottom: 8px;
+    }
+
+    .weather .risk {
+      color: var(--warn);
+      font-weight: 700;
+      margin-top: 10px;
+    }
+
+    .checklist {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .check {
+      border-left: 4px solid var(--lake);
+      padding: 14px 16px;
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: 0 10px 26px rgba(30, 36, 40, .05);
+    }
+
+    .check:nth-child(2) { border-left-color: var(--sand); }
+    .check:nth-child(3) { border-left-color: var(--green); }
+
+    footer {
+      color: var(--muted);
+      font-size: 13px;
+      border-top: 1px solid var(--line);
+      padding-top: 18px;
+    }
+
+    @media (max-width: 920px) {
+      .summary-grid, .monitor-grid, .weather-cards, .checklist, .live-panel {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+      .layout { grid-template-columns: 1fr; }
+      .day { grid-template-columns: 76px 1fr; }
+      .day .tag { grid-column: 2; width: fit-content; }
+    }
+
+    @media (max-width: 620px) {
+      .hero { min-height: 72vh; }
+      .nav-inner { align-items: flex-start; flex-direction: column; gap: 0; padding-top: 10px; }
+      .summary-grid, .monitor-grid, .weather-cards, .checklist, .live-panel { grid-template-columns: 1fr; }
+      .day { grid-template-columns: 1fr; }
+      .day .tag { grid-column: auto; }
+      .live-head, .price-item, .weather-live-item { align-items: flex-start; grid-template-columns: 1fr; }
+      .live-head { flex-direction: column; }
+      th, td { padding: 10px 8px; font-size: 13px; }
+      .hero-inner, main, .nav-inner { width: min(100% - 24px, 1180px); }
+    }
+  </style>
+</head>
+<body>
+  <header class="hero">
+    <div class="hero-inner">
+      <p class="eyebrow">2026.09.29 - 2026.10.06｜上海出发｜喀什进出｜7人包车</p>
+      <h1>南疆国庆旅行攻略与机票天气监控</h1>
+      <p class="hero-copy">把喀什的人文、帕米尔高原的雪山湖泊、塔县的盘龙古道和胡杨景观放进8天行程，车程不过度硬拉，适合7个人舒适包车。</p>
+      <div class="hero-actions">
+        <a class="button primary" href="#strategy">查看旅行攻略</a>
+        <a class="button" href="#monitor">查看监控面板</a>
+      </div>
+    </div>
+  </header>
+
+  <nav class="nav" aria-label="页面导航">
+    <div class="nav-inner">
+      <div class="brand">南疆出行作战板</div>
+      <div class="tabs">
+        <a href="#overview">概览</a>
+        <a href="#strategy">旅行攻略</a>
+        <a href="#car">包车要求</a>
+        <a href="#monitor">机票天气监控</a>
+        <a href="#todo">出发清单</a>
+      </div>
+    </div>
+  </nav>
+
+  <main>
+    <section id="overview">
+      <h2>行程概览</h2>
+      <div class="summary-grid">
+        <div class="metric">
+          <div class="label">人数与交通</div>
+          <div class="value">7人 + 司机</div>
+          <div class="note">建议9座或10座商务车，给行李留空间。</div>
+        </div>
+        <div class="metric">
+          <div class="label">进出城市</div>
+          <div class="value">喀什进出</div>
+          <div class="note">上海往返喀什，减少跨城还车和折腾。</div>
+        </div>
+        <div class="metric">
+          <div class="label">核心体验</div>
+          <div class="value">喀什 + 塔县</div>
+          <div class="note">古城、白沙湖、慕士塔格峰、盘龙古道。</div>
+        </div>
+        <div class="metric">
+          <div class="label">路线原则</div>
+          <div class="value">舒适优先</div>
+          <div class="note">不硬拉和田大环线，避免国庆长车程疲劳。</div>
+        </div>
+      </div>
+    </section>
+
+    <section id="strategy" class="layout">
+      <div>
+        <h2>南疆旅行攻略</h2>
+        <div class="route-list">
+          <article class="day">
+            <div class="date">9/29</div>
+            <div>
+              <h3>上海飞喀什，落地休整</h3>
+              <p>抵达后不要排太满，晚上轻松逛喀什古城，吃烤包子、鸽子汤、抓饭，适应新疆作息。</p>
+            </div>
+            <span class="tag">住喀什</span>
+          </article>
+          <article class="day">
+            <div class="date">9/30</div>
+            <div>
+              <h3>喀什古城深度日</h3>
+              <p>安排古城开城仪式、百年老茶馆、手工艺街、艾提尕尔周边、香妃园。当天也适合办齐边防证。</p>
+            </div>
+            <span class="tag">住喀什</span>
+          </article>
+          <article class="day">
+            <div class="date">10/1</div>
+            <div>
+              <h3>喀什到塔县，高原景观进入正片</h3>
+              <p>沿中巴友谊公路前往塔什库尔干，重点看白沙湖、喀拉库勒湖、慕士塔格峰。当天海拔上升明显，节奏放慢。</p>
+            </div>
+            <span class="tag">住塔县</span>
+          </article>
+          <article class="day">
+            <div class="date">10/2</div>
+            <div>
+              <h3>盘龙古道与塔县周边</h3>
+              <p>走盘龙古道、瓦恰乡、班迪尔蓝湖或下坂地水库、塔合曼湿地。天气好时雪山和蓝湖会非常出片。</p>
+            </div>
+            <span class="tag">住塔县</span>
+          </article>
+          <article class="day">
+            <div class="date">10/3</div>
+            <div>
+              <h3>塔县返回喀什</h3>
+              <p>返程可补拍白沙湖、慕士塔格峰，体力和路况允许再加奥依塔克冰川公园。晚上回喀什吃夜市。</p>
+            </div>
+            <span class="tag">住喀什</span>
+          </article>
+          <article class="day">
+            <div class="date">10/4</div>
+            <div>
+              <h3>喀什牛羊大巴扎与古城二刷</h3>
+              <p>如果当天是周日，把牛羊大巴扎放在上午。下午留给古城慢逛、旅拍、咖啡馆和伴手礼。</p>
+            </div>
+            <span class="tag">住喀什</span>
+          </article>
+          <article class="day">
+            <div class="date">10/5</div>
+            <div>
+              <h3>莎车与泽普金湖杨一日往返</h3>
+              <p>看莎车王陵、叶尔羌汗王宫，再到泽普金湖杨。若胡杨未到最佳色期，也可改成喀什休闲日。</p>
+            </div>
+            <span class="tag">住喀什</span>
+          </article>
+          <article class="day">
+            <div class="date">10/6</div>
+            <div>
+              <h3>喀什飞上海</h3>
+              <p>晚航班可上午补买干果、手工艺品；早航班则建议前一晚把行李和证件完全整理好。</p>
+            </div>
+            <span class="tag">返程</span>
+          </article>
+        </div>
+      </div>
+
+      <aside>
+        <div class="card">
+          <h3>为什么不硬拉大环线</h3>
+          <p>国庆期间车多、景区住宿紧张，7个人又需要舒服座椅。喀什进出的小环线能把精华压实，同时留出天气调整空间。</p>
+        </div>
+        <div class="card">
+          <h3>可替换方案</h3>
+          <ul>
+            <li>如果塔县天气差：多留一天喀什，等白沙湖和慕士塔格峰窗口。</li>
+            <li>如果胡杨未黄：10/5 改成英吉沙小刀村、土陶村或喀什休闲。</li>
+            <li>如果朋友能多请一天：10/7 返程更利于避开高峰。</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>预算抓手</h3>
+          <ul>
+            <li>国庆商务车约 2500-3800 元/天，视车型和是否含油费浮动。</li>
+            <li>酒店优先定可取消房，塔县房源更需要提前锁。</li>
+            <li>机票先看7人同价余票，再看分批购买是否便宜。</li>
+          </ul>
+        </div>
+      </aside>
+    </section>
+
+    <section id="car">
+      <h2>包车要求</h2>
+      <div class="monitor-grid">
+        <div class="monitor-card">
+          <h3>车型底线</h3>
+          <p>不要只写“8座商务”。7人加司机刚好8人，但行李会挤，长途舒适度也容易下降。</p>
+          <div class="status-row">
+            <span class="pill strong">优先9座/10座</span>
+            <span class="pill">独立座椅</span>
+            <span class="pill">后备箱充足</span>
+          </div>
+        </div>
+        <div class="monitor-card">
+          <h3>推荐车型</h3>
+          <p>可询价奔驰威霆/奔驰V级9座、福特全顺高顶商务、丰田海狮类商务改装车，重点看座椅和行李空间实拍。</p>
+        </div>
+        <div class="monitor-card">
+          <h3>合同写清</h3>
+          <ul>
+            <li>是否含油费、过路费、停车费、司机食宿。</li>
+            <li>国庆堵车超时费、临时改线费、每日公里限制。</li>
+            <li>车辆营运资质、保险、司机是否熟悉塔县路线。</li>
+          </ul>
+        </div>
+        <div class="monitor-card">
+          <h3>证件与安全</h3>
+          <ul>
+            <li>塔县、盘龙古道一带需要边境管理区通行证。</li>
+            <li>高原第一晚不饮酒、不剧烈运动，备好厚外套和防晒。</li>
+            <li>让司机提前确认白沙湖、盘龙古道路况和临时管制。</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section id="monitor">
+      <h2>机票检测和天气检测</h2>
+      <div class="live-panel" aria-live="polite">
+        <div class="live-card">
+          <div class="live-head">
+            <div class="live-title"><span class="live-dot pending" id="flightDot"></span>机票实时状态</div>
+            <div class="live-time" id="flightUpdated">等待数据</div>
+          </div>
+          <p id="flightSummary">线上部署后，这里会自动读取最新机票监控结果。</p>
+          <div class="price-list" id="flightPrices"></div>
+        </div>
+        <div class="live-card">
+          <div class="live-head">
+            <div class="live-title"><span class="live-dot pending" id="weatherDot"></span>天气实时状态</div>
+            <div class="live-time" id="weatherUpdated">等待数据</div>
+          </div>
+          <p id="weatherSummary">线上部署后，这里会自动读取喀什、塔县、泽普/莎车的天气风险。</p>
+          <div class="weather-live-list" id="weatherLive"></div>
+        </div>
+      </div>
+      <div class="monitor-grid">
+        <div class="monitor-card">
+          <h3>机票监控规则</h3>
+          <p>已按每日一次监控配置：优先看 9/29 去程、10/6 返程，同时兼看前后一天。</p>
+          <div class="status-row">
+            <span class="pill strong">上海 → 喀什</span>
+            <span class="pill">9/28</span>
+            <span class="pill strong">9/29</span>
+            <span class="pill">9/30</span>
+          </div>
+          <div class="status-row">
+            <span class="pill strong">喀什 → 上海</span>
+            <span class="pill">10/5</span>
+            <span class="pill strong">10/6</span>
+            <span class="pill">10/7</span>
+          </div>
+        </div>
+        <div class="monitor-card">
+          <h3>触发提醒</h3>
+          <ul>
+            <li>单人往返含税价格明显低于近期均价。</li>
+            <li>同一价格档至少可买7张。</li>
+            <li>直飞价格接近中转，或较上次下降10%以上。</li>
+            <li>返程 10/7 明显便宜时，提醒是否多请一天假。</li>
+          </ul>
+        </div>
+      </div>
+
+      <div style="margin-top: 18px; overflow-x: auto;">
+        <table aria-label="机票购买策略">
+          <thead>
+            <tr>
+              <th>组合</th>
+              <th>适合情况</th>
+              <th>购买建议</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>9/29 去 + 10/6 回</td>
+              <td>最贴合原计划，不额外请假。</td>
+              <td>如果直飞只比中转贵 500-800 元/人以内，优先直飞。</td>
+            </tr>
+            <tr>
+              <td>9/28 晚去 + 10/6 回</td>
+              <td>去程价格低，且大家能提前一晚出发。</td>
+              <td>多一晚喀什住宿，换来更从容的第一天。</td>
+            </tr>
+            <tr>
+              <td>9/29 去 + 10/7 回</td>
+              <td>返程避峰明显便宜，朋友可请一天假。</td>
+              <td>适合把10/6变成喀什休闲或备用天气日。</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3 style="margin-top: 28px;">天气关注城市</h3>
+      <div class="weather-cards">
+        <div class="weather">
+          <div class="city">喀什</div>
+          <p>昼夜温差明显，白天适合轻外套，夜晚需要保暖层。</p>
+          <div class="risk">关注：沙尘、降温、返程航班延误。</div>
+        </div>
+        <div class="weather">
+          <div class="city">塔什库尔干</div>
+          <p>高海拔，10月初夜间偏冷，风大时体感下降很快。</p>
+          <div class="risk">关注：降雪、道路管制、盘龙古道开放状态。</div>
+        </div>
+        <div class="weather">
+          <div class="city">泽普/莎车</div>
+          <p>整体比塔县温和，适合作为胡杨和人文补充线。</p>
+          <div class="risk">关注：胡杨变色情况、景区人流。</div>
+        </div>
+      </div>
+    </section>
+
+    <section id="todo">
+      <h2>出发前清单</h2>
+      <div class="checklist">
+        <div class="check">
+          <h3>现在到8月</h3>
+          <p>锁定包车车型、酒店可取消房、7人证件信息；确认大家能否接受9/28或10/7的机票备选。</p>
+        </div>
+        <div class="check">
+          <h3>9月上旬</h3>
+          <p>办理边境通行证，复核塔县住宿、司机路线、行李空间和每日出发时间。</p>
+        </div>
+        <div class="check">
+          <h3>出发前7天</h3>
+          <p>重点看塔县天气、道路管制、盘龙古道状态；把10/5设置为可替换机动日。</p>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      页面更新时间：2026-07-08。线上版本会每60秒读取一次 data/status.json；真正实时程度取决于后台监控任务的更新频率。
+    </footer>
+  </main>
+  <script>
+    const fallbackStatus = {
+      updatedAt: "2026-07-08T02:00:47Z",
+      source: "Codex monitor",
+      flight: {
+        status: "pending",
+        summary: "暂无可确认的7人可购低价或明显降价信号，继续每日监控。",
+        items: [
+          { route: "上海 → 喀什", dates: "9/28、9/29、9/30", price: "待更新", note: "重点看直飞/经停同航班与7人余票" },
+          { route: "喀什 → 上海", dates: "10/5、10/6、10/7", price: "待更新", note: "重点看10/6与10/7返程价差" }
+        ]
+      },
+      weather: {
+        status: "pending",
+        summary: "距离出发较久，临近9月下旬再提高天气监控频率。",
+        cities: [
+          { city: "喀什", condition: "待更新", risk: "关注沙尘、降温和返程航班延误" },
+          { city: "塔什库尔干", condition: "待更新", risk: "关注降雪、道路管制、盘龙古道开放状态" },
+          { city: "泽普/莎车", condition: "待更新", risk: "关注胡杨变色情况和景区人流" }
+        ]
+      }
+    };
+
+    function formatTime(value) {
+      if (!value) return "等待数据";
+      const date = new Date(value);
+      if (Number.isNaN(date.getTime())) return value;
+      return new Intl.DateTimeFormat("zh-CN", {
+        month: "2-digit",
+        day: "2-digit",
+        hour: "2-digit",
+        minute: "2-digit",
+        hour12: false
+      }).format(date);
+    }
+
+    function renderStatus(data) {
+      const flightDot = document.getElementById("flightDot");
+      const weatherDot = document.getElementById("weatherDot");
+      flightDot.classList.toggle("pending", data.flight?.status !== "live");
+      weatherDot.classList.toggle("pending", data.weather?.status !== "live");
+      document.getElementById("flightUpdated").textContent = "更新 " + formatTime(data.updatedAt);
+      document.getElementById("weatherUpdated").textContent = "更新 " + formatTime(data.updatedAt);
+      document.getElementById("flightSummary").textContent = data.flight?.summary || fallbackStatus.flight.summary;
+      document.getElementById("weatherSummary").textContent = data.weather?.summary || fallbackStatus.weather.summary;
+
+      const flightItems = data.flight?.items?.length ? data.flight.items : fallbackStatus.flight.items;
+      document.getElementById("flightPrices").innerHTML = flightItems.map(item => `
+        <div class="price-item">
+          <div class="price-main">
+            <div class="price-route">${item.route}</div>
+            <div class="price-meta">${item.dates}｜${item.note || "继续观察"}</div>
+          </div>
+          <div class="price-value">${item.price}</div>
+        </div>
+      `).join("");
+
+      const weatherItems = data.weather?.cities?.length ? data.weather.cities : fallbackStatus.weather.cities;
+      document.getElementById("weatherLive").innerHTML = weatherItems.map(item => `
+        <div class="weather-live-item">
+          <div class="weather-main">
+            <div class="weather-city">${item.city}</div>
+            <div class="weather-meta">${item.condition}</div>
+          </div>
+          <span class="signal">${item.risk}</span>
+        </div>
+      `).join("");
+    }
+
+    async function loadStatus() {
+      try {
+        const response = await fetch("data/status.json?ts=" + Date.now(), { cache: "no-store" });
+        if (!response.ok) throw new Error("status file unavailable");
+        renderStatus(await response.json());
+      } catch (error) {
+        renderStatus(fallbackStatus);
+      }
+    }
+
+    loadStatus();
+    setInterval(loadStatus, 60000);
+  </script>
+</body>
+</html>
+
+# 南疆网页上线说明
+
+这个目录已经是可上线的静态网站：
+
+- `nanjiang-trip-dashboard.html`：网页本体
+- `nanjiang-hero.png`：页面横幅图
+- `data/status.json`：机票和天气监控数据
+
+上线后，网页会每60秒自动读取一次 `data/status.json`。只要后台监控任务更新这个文件，所有打开链接的人都会看到新状态。
+
+## GitHub Pages 上线步骤
+
+1. 打开 GitHub，新建一个公开仓库，例如 `nanjiang-trip-dashboard`。
+2. 在仓库首页点 `Add file` → `Upload files`。
+3. 上传这个目录里的以下内容：
+   - `index.html`
+   - `nanjiang-trip-dashboard.html`
+   - `nanjiang-hero.png`
+   - `ONLINE_DEPLOY.md`
+   - 整个 `data` 文件夹
+4. 点 `Commit changes`。
+5. 进入仓库 `Settings` → `Pages`。
+6. `Build and deployment` 选择：
+   - Source: `Deploy from a branch`
+   - Branch: `main`
+   - Folder: `/root`
+7. 保存后等待1-3分钟，GitHub 会生成一个公开链接，通常长这样：
+   `https://你的用户名.github.io/nanjiang-trip-dashboard/`
+
+朋友打开这个链接就能看到网页。
+
+## 真正实时监控还需要什么
+
+天气可以接天气 API 定时更新 `data/status.json`。
+
+机票价格需要接入可靠航班/OTA数据源，或由浏览器自动化监控携程/飞猪/去哪儿的结果页后写入 `data/status.json`。由于机票价格、余票、行李和退改规则都很动态，建议使用你实际购买平台的数据源，并确认平台允许自动查询。
+
+## 如何更新实时状态
+
+GitHub Pages 会展示仓库里的 `data/status.json`。以后每次监控发现变化，只要更新并提交这个文件，网页上所有人会在最多60秒后看到新内容。
+
+如果手动更新：
+
+1. 打开仓库里的 `data/status.json`。
+2. 点右上角铅笔图标编辑。
+3. 修改 `updatedAt`、机票价格、天气风险或摘要。
+4. 点 `Commit changes`。
+
+如果自动更新：
+
+- 可以用 GitHub Actions 定时任务更新 `data/status.json`。
+- 天气可接入天气 API。
+- 机票建议先确定数据来源，再做自动化，避免价格和余票不准确。
+
+## 当前状态
+
+当前网页已经支持实时展示，但 `status.json` 仍是初始监控结果。要让朋友看到真正实时变化，需要完成线上托管和后台数据更新任务。
